@@ -1,22 +1,43 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&subset=cyrillic');
-
-* {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 16px;
-  background-color: #E2E7EC;
+  background-color: #e2e7ec;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 16px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .container {
-  max-width: 1120px;
-  min-width: 320px;
+  max-width: 1150px;
   margin: 90px auto;
+  padding: 0 15px;
 }
 
+/* Grid of posts */
 .posts {
   display: flex;
   flex-wrap: wrap;
@@ -24,103 +45,113 @@ body {
 }
 
 .posts__element {
+  position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
   flex-basis: 32%;
   margin-bottom: 22px;
-  position: relative;
+  background-color: #fff;
 }
 
-
-.posts__element>img {
-  display: block;
+.posts__element > img {
   width: 100%;
+  height: auto;
 }
 
 .posts__info {
-  padding: 15px 25px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   flex-grow: 1;
+  padding: 15px 25px;
+}
+
+.posts__date {
+  margin: 7px 0;
+  color: #6f6f6f;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: 0.325px;
+  text-transform: uppercase;
 }
 
 .posts__info h2 {
-  margin-bottom: auto;
-  margin-top: 7px;
-  font-weight: 22px;
+  margin: 7px 0 auto;
+  font-size: 22px;
   line-height: 30px;
 }
 
 .posts__info h2 a {
   color: #000;
   font-weight: 700;
+  letter-spacing: 0.55px;
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 0.55px;
 }
 
-.posts__info h2 a:hover {
-   text-decoration: underline;
-}
-
-.posts__date {
-  font-size: 13px;
-  line-height: 30px;
-  letter-spacing: 0.325px;
-  color: #818181;
-  text-transform: uppercase;
-  font-weight: 600px;
-  margin: 7px 0;
+.posts__info h2 a:hover,
+.posts__info h2 a:focus-visible {
+  text-decoration: underline;
 }
 
 .posts__author {
+  align-self: flex-start;
   margin-top: 55px;
 }
 
+.posts__author img {
+  border-radius: 50%;
+}
+
+/* The big post: text over the photo */
 .posts__element--big {
   flex-basis: 66%;
+}
+
+.posts__element--big > img {
+  flex-grow: 1;
+  height: 100%;
+  object-fit: cover;
+}
+
+.posts__element--big::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  pointer-events: none;
 }
 
 .posts__element--big .posts__info {
   position: absolute;
   bottom: 35px;
   left: 50px;
-  padding: 0 25px 0 0;
   z-index: 1;
+  padding: 0 25px 0 0;
+}
+
+.posts__element--big .posts__date {
+  color: #d0d0d0;
+}
+
+.posts__element--big .posts__info h2 {
+  font-size: 30px;
+  line-height: 36px;
 }
 
 .posts__element--big .posts__info a {
-  font-size: 30px;
-  line-height: 36px;
-  letter-spacing: 0.75px;
   color: #fff;
+  letter-spacing: 0.75px;
 }
 
-.posts__element--big img {
-  flex-grow: 1;
-}
-
-.posts__element--big::after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  background-image: linear-gradient(to top, rgba(0,0,0, 0.8), rgba(0, 0, 0, 0));
-}
-
-
-@media screen and (max-width: 980px) {
-  .posts__date {
-    font-size: 12px;
+/* Tablet */
+@media (max-width: 980px) {
+  .container {
+    margin: 40px auto;
   }
 
-  .posts__info h2 a {
-    font-size: 16px;
-    line-height: 24px;
+  .posts__date {
+    font-size: 12px;
   }
 
   .posts__info h2 {
@@ -129,42 +160,59 @@ body {
   }
 
   .posts__info {
-    padding: 10px 15px 15px 15px;
+    padding: 10px 15px 15px;
   }
 
-  .posts__element--big .posts__info a {
+  .posts__element--big .posts__info h2 {
     font-size: 20px;
     line-height: 26px;
   }
 }
 
-@media screen and (max-width: 768px) {
+/* Two columns: the big post becomes a normal card */
+@media (max-width: 768px) {
   .posts__element {
     flex-basis: 49%;
   }
 
-  .posts__element--big img {
+  .posts__element--big > img {
     flex-grow: 0;
+    height: auto;
+  }
+
+  .posts__element--big::after {
+    display: none;
   }
 
   .posts__element--big .posts__info {
     position: static;
-    left: auto;
-    bottom: auto;
-    padding: 10px 15px 15px 15px;
+    padding: 10px 15px 15px;
+  }
+
+  .posts__element--big .posts__date {
+    color: #6f6f6f;
+  }
+
+  .posts__element--big .posts__info h2 {
+    font-size: 16px;
+    line-height: 24px;
   }
 
   .posts__element--big .posts__info a {
-    font-size: 16px;
-    line-height: 24px;
     color: #000;
   }
-  .posts__element--big::after {
-    display: none;
+
+  .posts__author {
+    margin-top: 25px;
   }
 }
 
-@media screen and (max-width: 480px) {
+/* Phone: one column */
+@media (max-width: 480px) {
+  .container {
+    margin: 15px auto;
+  }
+
   .posts__element {
     flex-basis: 100%;
   }
